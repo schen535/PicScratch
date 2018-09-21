@@ -3,15 +3,15 @@ from bs4 import BeautifulSoup
 import os
 #导入所需要的模块
 class mzitu():
-    def all_url(self, url):
-        html = self.request(url)##
+    def all_url(self, url): #self是python对象实例必须的，指代实例自己，但可以不赋值
+        html = self.request(url)
         all_a = BeautifulSoup(html.text, 'lxml').find('div', class_='all').find_all('a')
         for a in all_a:
-            title = a.get_text()
+            title = a.get_text() #获取对象标签的文本内容
             print('------开始保存：', title) 
             path = str(title).replace("?", '_') ##替换掉带有的？
             self.mkdir(path) ##调用mkdir函数创建文件夹！这儿path代表的是标题title
-            href = a['href']
+            href = a['href'] ##获取a标签里的href
             self.html(href) 
 
     def html(self, href):   ##获得图片的页面地址
@@ -49,9 +49,9 @@ class mzitu():
     def request(self, url): ##这个函数获取网页的response 然后返回
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.110 Safari/537.36',
-            'referer':#伪造一个访问来源 "http://www.mzitu.com/100260/2"
+            'referer': "http://www.mzitu.com/100260/2" #伪造一个访问来源
         }
-        content = requests.get(url, headers=headers)
+        content = requests.get(url, headers=headers) #Python HTTP客户端库
         return content
 #设置启动函数
 def main():
